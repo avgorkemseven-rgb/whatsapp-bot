@@ -20,7 +20,7 @@ const client = new Client({
 
 client.on('qr', qr => {
     console.log('Giriş yapmak için bu QR kodu telefonunuzdan okutun:');
-    qrcode.generate(qr, { small: true });
+    qrcode.generate(qr, { small: false });
 });
 
 client.on('ready', () => {
