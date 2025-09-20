@@ -55,12 +55,19 @@ app.post('/send-message', authMiddleware, async (req, res) => {
 
 // Grup ID'sini öğrenmek için özel komut
 client.on('message', async msg => {
+    // Gruptan gelen HER MESAJIN ID'sini loglara yazdır
+    if (msg.from.endsWith('@g.us')) {
+        console.log(`Gruptan mesaj geldi. Grup ID: ${msg.from}`);
+    }
+
+    // @grup-id komutu hala çalışmaya devam etsin
     if (msg.body === '@grup-id' && msg.from.endsWith('@g.us')) {
         console.log(`Grup ID isteği geldi: ${msg.from}`);
-        const chat = await msg.getChat();
-        if (chat.isGroup) {
-             // Cevabı isteği gönderen kişiye özelden atalım
+        try {
+            // Cevabı isteği gönderen kişiye özelden atalım
             client.sendMessage(msg.author, `İstediğiniz grubun ID'si:\n${msg.from}`);
+        } catch (e) {
+            console.log("DM gönderilemedi, muhtemelen kişi rehberde ekli değil.");
         }
     }
 });
